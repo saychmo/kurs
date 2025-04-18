@@ -143,7 +143,7 @@ namespace kurs
             }
         }
 
-        private void addEmpoeeys_button_Click(object sender, EventArgs e)
+        private void addEmpoeeys_button_Click(object sender, EventArgs e) //здесь
         {
             if (Surname_textBox.Text == "Фамилия" ||
         Name_textBox.Text == "Имя" ||
