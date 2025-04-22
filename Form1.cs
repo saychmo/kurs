@@ -20,13 +20,13 @@ namespace kurs
             LoadTeamsFromFile();
         }
 
-        private List<Employee> employees = new List<Employee>();
-        private List<Project> projects = new List<Project>();
+        private List<Employee> employees = new();
+        private List<Project> projects = new();
         private TeamMemberForm teamMemberForm = null!;
         public Form2 form2 = null!;
         private void LoadImage_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using (OpenFileDialog openFileDialog = new())
             {
                 openFileDialog.InitialDirectory = "c:\\";
                 openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.png, *.bmp)|*.jpg;*.jpeg;*.png;*.bmp|All files (*.*)|*.*";
@@ -115,7 +115,7 @@ namespace kurs
 
         public void CreateProject_button_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2(); // Передаем список проектов
+            Form2 form2 = new(); // Передаем список проектов
             form2.ProjectAdded += Form2_ProjectAdded; // Подписываемся на событие
             form2.UpdateLiderComboBox(employees);
             form2.ShowDialog();
@@ -127,7 +127,7 @@ namespace kurs
             ProgramJSON.SaveProjects(projects);
             UpdateProjectListView();
 
-            DetailForm detailForm = new DetailForm(project);
+            DetailForm detailForm = new(project);
             detailForm.ShowDialog();
         }
 
@@ -136,7 +136,7 @@ namespace kurs
             listViewProjects.Items.Clear();
             foreach (var project in projects)
             {
-                ListViewItem item = new ListViewItem(project.ProjectName);
+                ListViewItem item = new(project.ProjectName);
                 item.SubItems.Add(project.StartDate.ToShortDateString());
                 item.SubItems.Add(project.EndDate.ToShortDateString());
                 listViewProjects.Items.Add(project.ProjectName);
@@ -157,7 +157,7 @@ namespace kurs
             {
                 listExployee_textBox.Clear();
             }
-            Employee employee = new Employee(
+            Employee employee = new(
                 Surname_textBox.Text,
                 Name_textBox.Text,
                 Patronymic_textBox.Text,
@@ -192,7 +192,7 @@ namespace kurs
                 Employee selectedEmployee = employees[index];
 
                 // Создаем новую форму и передаем данные
-                InfoEmployeesForm detailsForm = new InfoEmployeesForm(
+                InfoEmployeesForm detailsForm = new(
                     this, // Передаем ссылку на основную форму
                     index,
                     selectedEmployee.Surname,
@@ -224,9 +224,8 @@ namespace kurs
 
         private void LoadEmployees()
         {
-            employees = ProgramJSON.LoadEmployees();
-            
             listExployee_textBox.Clear();
+            employees = ProgramJSON.LoadEmployees();
             if (employees != null)
             {
                 foreach (var employee in employees)
@@ -242,7 +241,7 @@ namespace kurs
             
 
             // Открываем Form2 и передаем список сотрудников
-            Form2 form2 = new Form2();
+            Form2 form2 = new();
             form2.UpdateLiderComboBox(employees);
 
         }
@@ -255,7 +254,7 @@ namespace kurs
 
                 if (selectedProject != null)
                 {
-                    DetailForm detailForm = new DetailForm(selectedProject);
+                    DetailForm detailForm = new(selectedProject);
                     detailForm.ShowDialog();
                 }
             }
@@ -323,7 +322,7 @@ namespace kurs
                 // Обновляем информацию о сотруднике
                 employees[index] = updatedEmployee;
 
-                //SaveEmployees();
+                SaveEmployees();
                 LoadEmployees();
                 form2.UpdateLiderComboBox(employees);
             }
@@ -332,14 +331,16 @@ namespace kurs
 
         public void btnCreateTeam_Click(object sender, EventArgs e)
         {
-            TeamMemberForm teamMemberForm = new TeamMemberForm();
-            teamMemberForm.Owner = this; // Устанавливаем владельца формы
+            TeamMemberForm teamMemberForm = new();
+            {
+                Owner = this; // Устанавливаем владельца формы
+            };
             teamMemberForm.LoadEmployees(employees);
             teamMemberForm.ShowDialog();
             //UpdateEmployeeList_1(teamMemberForm);
         }
 
-        private Dictionary<string, List<string>> teamsData = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> teamsData = new();
 
         public void AddTeamName(string teamName)
         {
@@ -374,7 +375,7 @@ namespace kurs
         private void SaveTeamNameToFile(string teamName)
         {
             string filePath = "teams.txt"; // Путь к файлу
-            using (StreamWriter writer = new StreamWriter(filePath, true)) // true для добавления в файл
+            using (StreamWriter writer = new(filePath, true)) // true для добавления в файл
             {
                 writer.WriteLine(teamName);
             }
@@ -434,7 +435,7 @@ namespace kurs
                 if (teamsData.TryGetValue(selectedTeamName, out List<string> teamMembers))
                 {
                     // Открываем форму с информацией о коллективе
-                    TeamInfoForm teamInfoForm = new TeamInfoForm(selectedTeamName, teamMembers);
+                    TeamInfoForm teamInfoForm = new(selectedTeamName, teamMembers);
                     teamInfoForm.ShowDialog();
                 }
                 else
@@ -450,29 +451,29 @@ namespace kurs
             ProgramJSON.SaveProjects(projects);
         }
 
-        //private void UpdateEmployeeList_1(TeamMemberForm teamMemberForm)
-        //{
-        //    if (teamMemberForm == null)
-        //    {
-        //        MessageBox.Show("teamMemberForm не инициализирован.");
-        //        return;
-        //    }
+        private void UpdateEmployeeList_1(TeamMemberForm teamMemberForm)
+        {
+            if (teamMemberForm == null)
+            {
+                MessageBox.Show("teamMemberForm не инициализирован.");
+                return;
+            }
 
-        //    var checkedItems = teamMemberForm.GetEmployeeList(); // Получаем список сотрудников
+            var checkedItems = teamMemberForm.GetEmployeeList(); // Получаем список сотрудников
 
-        //    employees.Clear();
-        //    foreach (var item in checkedItems)
-        //    {
-        //        employees.Add(new Employee(item));
-        //    }
+            employees.Clear();
+            foreach (var item in checkedItems)
+            {
+                employees.Add(new Employee(item));
+            }
 
-        //    SaveEmployees();
-        //}
+            SaveEmployees();
+        }
 
 
         private void CreateSpeciality_button_Click(object sender, EventArgs e)
         {
-            using (AddSpecialtyForm addSpecialtyForm = new AddSpecialtyForm())
+            using (AddSpecialtyForm addSpecialtyForm = new())
             {
                 if (addSpecialtyForm.ShowDialog() == DialogResult.OK)
                 {
