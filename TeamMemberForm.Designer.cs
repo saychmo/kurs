@@ -130,7 +130,6 @@
             Controls.Add(dataGridViewTeamMembers);
             Name = "TeamMemberForm";
             Text = "TeamMemberForm";
-            FormClosed += TeamMemberForm_FormClosed;
             ((System.ComponentModel.ISupportInitialize)dataGridViewTeamMembers).EndInit();
             ResumeLayout(false);
             PerformLayout();

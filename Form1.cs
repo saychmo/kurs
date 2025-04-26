@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net;
@@ -18,6 +19,7 @@ namespace kurs
             form2 = new Form2();
             LoadEmployees();
             LoadTeamsFromFile();
+            LoadTeamsDataFromFile("teamsData.json");
         }
 
         private List<Employee> employees = new();
@@ -230,7 +232,7 @@ namespace kurs
             {
                 foreach (var employee in employees)
                 {
-                    listExployee_textBox.AppendText($"{employee.Surname} {employee.Name} {employee.Patronymic}\n");
+                    listExployee_textBox.AppendText($"{employee.Surname} {employee.Name} {employee.Patronymic}\r\n");
                 }
             }
             else
@@ -332,12 +334,10 @@ namespace kurs
         public void btnCreateTeam_Click(object sender, EventArgs e)
         {
             TeamMemberForm teamMemberForm = new();
-            {
-                Owner = this; // Устанавливаем владельца формы
-            };
+            teamMemberForm.Owner = this;
             teamMemberForm.LoadEmployees(employees);
             teamMemberForm.ShowDialog();
-            //UpdateEmployeeList_1(teamMemberForm);
+            UpdateEmployeeList_1(teamMemberForm);
         }
 
         private Dictionary<string, List<string>> teamsData = new();
@@ -409,6 +409,19 @@ namespace kurs
                 MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}");
             }
         }
+        public void SaveTeamsDataToFile(string filePath)
+        {
+            string json = JsonConvert.SerializeObject(teamsData, Formatting.Indented);
+            File.WriteAllText(filePath, json);
+        }
+        public void LoadTeamsDataFromFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                teamsData = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
+            }
+        }
 
         public void AddTeamMembers(string teamName, List<string> teamMembers)
         {
@@ -421,6 +434,7 @@ namespace kurs
             {
                 teamsData[teamName] = new List<string>(teamMembers);
             }
+            
         }
         private void textBoxTeams_MouseClick(object sender, MouseEventArgs e)
         {
@@ -461,13 +475,13 @@ namespace kurs
 
             var checkedItems = teamMemberForm.GetEmployeeList(); // Получаем список сотрудников
 
-            employees.Clear();
+            teamMemberForm.employeeList.Clear();
             foreach (var item in checkedItems)
             {
-                employees.Add(new Employee(item));
+                teamMemberForm.employeeList.Add(new string(item));
             }
 
-            SaveEmployees();
+            teamMemberForm.SaveEmployeeListToJson(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "employeeList.json"));
         }
 
 

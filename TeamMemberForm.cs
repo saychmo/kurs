@@ -14,12 +14,12 @@ namespace kurs
 {
     public partial class TeamMemberForm : Form
     {
-        private List<string> employeeList = new List<string>();
+        public List<string> employeeList = new();
         public TeamMemberForm()
         {
             InitializeComponent();
            
-            LoadEmployeeListFromJson(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "employees.json"));
+            LoadEmployeeListFromJson(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "employeeList.json"));
         }
         public void AddEmployeeToCheckedListBox(string employeeName)
         {
@@ -59,8 +59,8 @@ namespace kurs
                 return;
             }
 
-            // Создаем список для хранения названий коллективов
-            List<string> teamMembers = new List<string>();
+            // Создаем список для хранения коллективов
+            List<string> teamMembers = new();
 
             // Проходим по строкам DataGridView и собираем данные
             foreach (DataGridViewRow row in dataGridViewTeamMembers.Rows)
@@ -79,9 +79,14 @@ namespace kurs
 
             // Закрываем форму и передаем данные обратно в Form1
             Form1 mainForm = (Form1)Owner;
+            if (mainForm == null)
+            {
+                MessageBox.Show("Не удалось получить родительскую форму.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             mainForm.AddTeamName(teamName);
             mainForm.AddTeamMembers(teamName, teamMembers);
-
+            mainForm.SaveTeamsDataToFile("teamsData.json");
             this.Close();
         }
 
@@ -118,9 +123,5 @@ namespace kurs
 
         }
 
-        private void TeamMemberForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            SaveEmployeeListToJson(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "employees.json"));
-        }
     }
 }
