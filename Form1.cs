@@ -145,13 +145,20 @@ namespace kurs
             }
         }
 
-        private void addEmpoeeys_button_Click(object sender, EventArgs e) //здесь
+        private void addEmpoeeys_button_Click(object sender, EventArgs e) 
         {
             if (Surname_textBox.Text == "Фамилия" ||
-        Name_textBox.Text == "Имя" ||
-        Patronymic_textBox.Text == "Отчество")
+                Name_textBox.Text == "Имя" ||
+                Patronymic_textBox.Text == "Отчество")
             {
                 MessageBox.Show("Пожалуйста, заполните все поля: Фамилия, Имя и Отчество.");
+                return;
+            }
+            // Проверка на уникальность сотрудника
+            string fullName = $"{Surname_textBox.Text} {Name_textBox.Text} {Patronymic_textBox.Text}";
+            if (employees.Any(emp => $"{emp.Surname} {emp.Name} {emp.Patronymic}" == fullName))
+            {
+                MessageBox.Show("Сотрудник с таким ФИО уже существует.");
                 return;
             }
             // Удаляем сообщение о том, что нет сотрудников, если оно есть
@@ -364,7 +371,8 @@ namespace kurs
                 textBoxTeams.Lines = updatedLines.ToArray();
 
                 // Также удаляем название коллектива из хранимых данных
-                teamsData.Remove(selectedText); 
+                teamsData.Remove(selectedText);
+                SaveTeamsDataToFile("teamsData.json");
                 SaveTeamsToFile();
             }
             else
@@ -421,6 +429,7 @@ namespace kurs
                 string json = File.ReadAllText(filePath);
                 teamsData = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
             }
+
         }
 
         public void AddTeamMembers(string teamName, List<string> teamMembers)
