@@ -434,6 +434,10 @@ namespace kurs
 
         public void AddTeamMembers(string teamName, List<string> teamMembers)
         {
+            if (teamsData == null)
+            {
+                teamsData = new Dictionary<string, List<string>>();
+            }
             // Сохраняем участников в словаре
             if (teamsData.ContainsKey(teamName))
             {

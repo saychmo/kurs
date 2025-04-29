@@ -24,9 +24,6 @@ namespace kurs
         }
         public void UpdateLiderComboBox(List<Employee> employees)
         {
-            //Lider_comboBox.DataSource = null;
-            //Lider_comboBox.DataSource = employees;
-            //Lider_comboBox.DisplayMember = "FullName";
             if (employees == null || employees.Count == 0)
             {
                 MessageBox.Show("Список сотрудников пуст.");
