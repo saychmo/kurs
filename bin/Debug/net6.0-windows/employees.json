@@ -1,0 +1,17 @@
+[
+  {
+    "Surname": "Семешко",
+    "Name": "Анастасия",
+    "Patronymic": "Николаевна",
+    "FullName": "Семешко Анастасия Николаевна",
+    "Gender": "жен",
+    "DateOfBirth": "1994-02-23T15:28:52",
+    "Address": "Зорге 15",
+    "Specialty": "Лаборант",
+    "Experience": "1 год",
+    "Education": "НГТУ",
+    "EducationDocument": "12345678901",
+    "Salary": "45000",
+    "PhotoPath": "C:\\Users\\user\\OneDrive\\images.png"
+  }
+]
