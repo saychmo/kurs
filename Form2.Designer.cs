@@ -153,21 +153,21 @@
             // 
             label22.AutoSize = true;
             label22.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label22.Location = new Point(487, 269);
+            label22.Location = new Point(475, 269);
             label22.Name = "label22";
-            label22.Size = new Size(110, 20);
+            label22.Size = new Size(151, 20);
             label22.TabIndex = 32;
-            label22.Text = "номер тел. ОЛ";
+            label22.Text = "номер телефона ОЛ";
             // 
             // label20
             // 
             label20.AutoSize = true;
             label20.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label20.Location = new Point(487, 233);
+            label20.Location = new Point(475, 230);
             label20.Name = "label20";
-            label20.Size = new Size(30, 20);
+            label20.Size = new Size(151, 20);
             label20.TabIndex = 31;
-            label20.Text = "ОЛ";
+            label20.Text = "Ответственное лицо";
             // 
             // label18
             // 
@@ -295,11 +295,11 @@
             // Lider_comboBox
             // 
             Lider_comboBox.FormattingEnabled = true;
-            Lider_comboBox.Items.AddRange(new object[] { "Авдюков" });
             Lider_comboBox.Location = new Point(215, 230);
             Lider_comboBox.Name = "Lider_comboBox";
             Lider_comboBox.Size = new Size(188, 28);
             Lider_comboBox.TabIndex = 43;
+            Lider_comboBox.Text = "Выберите сотрудника";
             // 
             // Form2
             // 

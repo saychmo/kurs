@@ -161,6 +161,61 @@ namespace kurs
                 MessageBox.Show("Сотрудник с таким ФИО уже существует.");
                 return;
             }
+            // Проверка пола
+            if (Gender.Text == "Пол")
+            {
+                MessageBox.Show("Укажите пол сотрудника.");
+                return;
+            }
+
+            // Проверка даты рождения
+            if (date_of_bith_Picker.Value >= DateTime.Now.Date || date_of_bith_Picker.Value.Date < new DateTime(1900, 1, 1))
+            {
+                MessageBox.Show("Укажите корректную дату рождения (не сегодняшнюю и не будущую дату, и не раньше 1900 года).");
+                return;
+            }
+
+            // Проверка адреса
+            if (Address_textBox.Text == "Ул. , д.")
+            {
+                MessageBox.Show("Укажите адрес сотрудника.");
+                return;
+            }
+
+            // Проверка специальности
+            if (specialty_comboBox.Text == "Специальность")
+            {
+                MessageBox.Show("Выберите специальность сотрудника.");
+                return;
+            }
+
+            // Проверка опыта работы
+            if (experience_comboBox.Text == "Опыт работы")
+            {
+                MessageBox.Show("Укажите опыт работы сотрудника.");
+                return;
+            }
+
+            // Проверка образования
+            if (string.IsNullOrWhiteSpace(education_textBox.Text))
+            {
+                MessageBox.Show("Укажите образование сотрудника.");
+                return;
+            }
+
+            // Проверка документа об образовании
+            if (string.IsNullOrWhiteSpace(educationDocument_textBox.Text))
+            {
+                MessageBox.Show("Укажите документ об образовании сотрудника.");
+                return;
+            }
+
+            // Проверка зарплаты перед созданием сотрудника
+            if (!decimal.TryParse(salary_textBox.Text, out decimal salaryValue) || salaryValue <= 0)
+            {
+                MessageBox.Show("Зарплата работника должна быть положительным числом!");
+                return;
+            }
             // Удаляем сообщение о том, что нет сотрудников, если оно есть
             if (listExployee_textBox.Text.Contains("Нет сотрудников для отображения."))
             {

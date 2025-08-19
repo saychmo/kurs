@@ -14,6 +14,7 @@ namespace kurs
     {
         private Form1 mainForm; // Ссылка на основную форму
         private int employeeIndex; // Индекс сотрудника в списке
+        private string originalPhotoPath;
         public InfoEmployeesForm(Form1 form, int index, string surname, string name, string patronymic, string gender, DateTime dateOfBirth, string address, string specialty, string experience, string education, string educationDocument, string salary, string photoPath)
         {
             InitializeComponent();
@@ -32,6 +33,7 @@ namespace kurs
             textBox_EdDoc.Text = educationDocument;
             textBox_Salary.Text = salary;
             LoadEmployeePhoto(photoPath);
+            originalPhotoPath = photoPath;
         }
 
 
@@ -70,7 +72,7 @@ namespace kurs
             string education = textBox_Education.Text;
             string educationDocument = textBox_EdDoc.Text;
             string salary = textBox_Salary.Text;
-            string photoPath = PhotoBox.ImageLocation; // Укажите новый путь к фото, если это необходимо
+            string photoPath = PhotoBox.ImageLocation ?? originalPhotoPath;
 
             // Создаем объект с обновленными данными
             Employee updatedEmployee = new Employee(surname, name, patronymic, gender, dateOfBirth, address, specialty, experience, education, educationDocument, salary, photoPath);

@@ -37,6 +37,80 @@ namespace kurs
         {
             try
             {
+                // Проверка всех обязательных полей
+                if (string.IsNullOrWhiteSpace(clientName_textBox.Text))
+                {
+                    MessageBox.Show("Введите заказщика проекта", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(address_textBox.Text))
+                {
+                    MessageBox.Show("Введите адрес заказщика", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(bankName_textBox.Text))
+                {
+                    MessageBox.Show("Введите название банка заказщика", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(accountNumber_textBox.Text))
+                {
+                    MessageBox.Show("Введите номер счета", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Проверка ИНН (должен быть числом и содержать 10 или 12 цифр)
+                if (string.IsNullOrWhiteSpace(inn_textBox.Text) ||
+                    !inn_textBox.Text.All(char.IsDigit) ||
+                    (inn_textBox.Text.Length != 10 && inn_textBox.Text.Length != 12))
+                {
+                    MessageBox.Show("ИНН должен содержать:\n- только цифры\n- 10 или 12 символов",
+                                  "Ошибка в ИНН", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Проверка телефона (только цифры, минимум 10 символов)
+                string phoneDigits = new string(responsiblePersonPhone_textBox.Text.Where(char.IsDigit).ToArray());
+                if (phoneDigits.Length < 10)
+                {
+                    MessageBox.Show("Номер телефона должен содержать:\n- минимум 10 цифр\n- можно использовать разделители",
+                                  "Ошибка в телефоне", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(responsiblePerson_textBox.Text))
+                {
+                    MessageBox.Show("Введите ответственное лицо", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(projectName_textBox.Text))
+                {
+                    MessageBox.Show("Введите название проекта", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(projectCost_textBox.Text))
+                {
+                    MessageBox.Show("Введите стоимость проекта", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(premiumRate_textBox.Text))
+                {
+                    MessageBox.Show("Введите премиальную ставку", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Проверка дат проекта
+                if (Start_Project.Value >= End_Project.Value)
+                {
+                    MessageBox.Show("Дата окончания проекта должна быть позже даты начала", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 // Получаем данные из текстовых полей
                 string? employeeName = Lider_comboBox.Text;
                 string clientName = clientName_textBox.Text;

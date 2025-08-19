@@ -13,5 +13,50 @@
     "EducationDocument": "12345678901",
     "Salary": "45000",
     "PhotoPath": "C:\\Users\\user\\OneDrive\\images.png"
+  },
+  {
+    "Surname": "пв",
+    "Name": "пв",
+    "Patronymic": "пв",
+    "FullName": "пв пв пв",
+    "Gender": "муж",
+    "DateOfBirth": "2025-08-07T00:07:42.9204679+07:00",
+    "Address": "пва",
+    "Specialty": "Дизайнер",
+    "Experience": "1 год",
+    "Education": "пв",
+    "EducationDocument": "пв",
+    "Salary": "436",
+    "PhotoPath": null
+  },
+  {
+    "Surname": "fdsf",
+    "Name": "sdf",
+    "Patronymic": "fds",
+    "FullName": "fdsf sdf fds",
+    "Gender": "муж",
+    "DateOfBirth": "2025-08-05T00:10:32",
+    "Address": "dsdfds",
+    "Specialty": "Аналитик",
+    "Experience": "1 год",
+    "Education": "fdg",
+    "EducationDocument": "g",
+    "Salary": "543",
+    "PhotoPath": "C:\\Users\\user\\OneDrive\\Изображения\\Снимки экрана\\Снимок экрана 2025-05-25 224127.png"
+  },
+  {
+    "Surname": "hghfhg",
+    "Name": "hd",
+    "Patronymic": "hf",
+    "FullName": "hghfhg hd hf",
+    "Gender": "муж",
+    "DateOfBirth": "2000-07-30T00:12:11",
+    "Address": "hfd",
+    "Specialty": "Аналитg",
+    "Experience": "2-4 года",
+    "Education": "hfd",
+    "EducationDocument": "gh",
+    "Salary": "643",
+    "PhotoPath": "C:\\Users\\user\\OneDrive\\Изображения\\Снимки экрана\\Снимок экрана 2025-06-16 230151.png"
   }
 ]
