@@ -51,6 +51,7 @@
             Surname_textBox = new TextBox();
             photoPath = new PictureBox();
             project = new TabPage();
+            EditProject_button = new Button();
             listViewProjects = new ListView();
             btnDeleteProject = new Button();
             CreateProject_button = new Button();
@@ -315,6 +316,7 @@
             // 
             // project
             // 
+            project.Controls.Add(EditProject_button);
             project.Controls.Add(listViewProjects);
             project.Controls.Add(btnDeleteProject);
             project.Controls.Add(CreateProject_button);
@@ -326,6 +328,17 @@
             project.TabIndex = 1;
             project.Text = "Проекты";
             project.UseVisualStyleBackColor = true;
+            // 
+            // EditProject_button
+            // 
+            EditProject_button.FlatStyle = FlatStyle.System;
+            EditProject_button.Location = new Point(224, 306);
+            EditProject_button.Name = "EditProject_button";
+            EditProject_button.Size = new Size(204, 29);
+            EditProject_button.TabIndex = 4;
+            EditProject_button.Text = "Редактировать проект";
+            EditProject_button.UseVisualStyleBackColor = true;
+            EditProject_button.Click += EditProject_button_Click_1;
             // 
             // listViewProjects
             // 
@@ -543,5 +556,6 @@
         private Button btnCreateTeam;
         private Button CreateSpeciality_button;
         private Button btnRemoveTeam;
+        private Button EditProject_button;
     }
 }

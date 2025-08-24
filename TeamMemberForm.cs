@@ -15,12 +15,45 @@ namespace kurs
     public partial class TeamMemberForm : Form
     {
         public List<string> employeeList = new();
-        public TeamMemberForm()
+        private Form1 _mainForm;
+        // Два конструктора для обратной совместимости
+        public TeamMemberForm() : this(null) { }
+        public TeamMemberForm(Form1 mainForm)
         {
             InitializeComponent();
-           
+            _mainForm = mainForm;
             LoadEmployeeListFromJson(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "employeeList.json"));
         }
+
+        public event Action<string> EmployeeDeletedFromList;
+
+        public void RemoveEmployeeFromAllLists(string fullName)
+        {
+            if (employeeList.Contains(fullName))
+            {
+                employeeList.Remove(fullName);
+                SaveEmployeeListToJson(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "employeeList.json"));
+            }
+
+            for (int i = checkedListBoxEmployees.Items.Count - 1; i >= 0; i--)
+            {
+                if (checkedListBoxEmployees.Items[i].ToString() == fullName)
+                {
+                    checkedListBoxEmployees.Items.RemoveAt(i);
+                }
+            }
+
+            for (int i = dataGridViewTeamMembers.Rows.Count - 1; i >= 0; i--)
+            {
+                if (dataGridViewTeamMembers.Rows[i].Cells["LastName"].Value?.ToString() == fullName)
+                {
+                    dataGridViewTeamMembers.Rows.RemoveAt(i);
+                }
+            }
+
+            EmployeeDeletedFromList?.Invoke(fullName);
+        }
+
         public void AddEmployeeToCheckedListBox(string employeeName)
         {
             if (!employeeList.Contains(employeeName)) // Проверяем, чтобы не добавлять дубликаты

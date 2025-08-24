@@ -24,3 +24,4 @@ C:\Users\user\source\repos\kurs\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
 C:\Users\user\source\repos\kurs\obj\Debug\net6.0-windows\kurs.csproj.AssemblyReference.cache
 C:\Users\user\source\repos\kurs\obj\Debug\net6.0-windows\kurs.csproj.CopyComplete
 C:\Users\user\source\repos\kurs\obj\Debug\net6.0-windows\kurs.AddSpecialtyForm.resources
+C:\Users\user\source\repos\kurs\obj\Debug\net6.0-windows\kurs.ReplaceProjectForm.resources

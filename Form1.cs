@@ -26,6 +26,7 @@ namespace kurs
         private List<Project> projects = new();
         private TeamMemberForm teamMemberForm = null!;
         public Form2 form2 = null!;
+        private ReplaceProjectForm replaceForm;
         private void LoadImage_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new())
@@ -123,6 +124,26 @@ namespace kurs
             form2.ShowDialog();
         }
 
+        // Обработчик обновления проекта
+        private void ReplaceForm_ProjectUpdated(Project updatedProject)
+        {
+            // Находим проект по имени
+            var existingProjectIndex = projects.FindIndex(p => p.ProjectName == updatedProject.ProjectName);
+
+            if (existingProjectIndex != -1)
+            {
+                // Обновляем проект
+                projects[existingProjectIndex] = updatedProject;
+
+                // Сохраняем изменения
+                ProgramJSON.SaveProjects(projects);
+                UpdateProjectListView();
+
+                MessageBox.Show("Проект успешно обновлен", "Успех",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         private void Form2_ProjectAdded(Project project)
         {
             projects.Add(project);
@@ -145,7 +166,7 @@ namespace kurs
             }
         }
 
-        private void addEmpoeeys_button_Click(object sender, EventArgs e) 
+        private void addEmpoeeys_button_Click(object sender, EventArgs e)
         {
             if (Surname_textBox.Text == "Фамилия" ||
                 Name_textBox.Text == "Имя" ||
@@ -283,7 +304,7 @@ namespace kurs
         private void SaveEmployees()
         {
             ProgramJSON.SaveEmployees(employees);
-            
+
         }
 
         private void LoadEmployees()
@@ -302,7 +323,7 @@ namespace kurs
                 // Обработка случая, если employees равно null
                 listExployee_textBox.AppendText("Нет сотрудников для отображения.\n");
             }
-            
+
 
             // Открываем Form2 и передаем список сотрудников
             Form2 form2 = new();
@@ -365,8 +386,22 @@ namespace kurs
 
                 if (indexToRemove != -1)
                 {
-                    employees.RemoveAt(indexToRemove); // Удаляем сотрудника из списка employees
+                    var removedEmployee = employees[indexToRemove];
+                    string fullName = $"{removedEmployee.Surname} {removedEmployee.Name} {removedEmployee.Patronymic}";
+
+                    employees.RemoveAt(indexToRemove);
                     listExployee_textBox.Text = string.Join(Environment.NewLine, employees.Select(e => $"{e.Surname} {e.Name} {e.Patronymic}"));
+
+                    // Уведомляем форму создания команды об удалении (если она открыта)
+                    if (teamMemberForm != null)
+                    {
+                        teamMemberForm.RemoveEmployeeFromAllLists(fullName);
+                    }
+                    else
+                    {
+                        // Если форма не открыта, вызываем обработчик напрямую
+                        OnEmployeeDeletedFromList(fullName);
+                    }
                 }
                 else
                 {
@@ -395,15 +430,42 @@ namespace kurs
 
         public void btnCreateTeam_Click(object sender, EventArgs e)
         {
-            TeamMemberForm teamMemberForm = new();
+            teamMemberForm = new TeamMemberForm(this);
             teamMemberForm.Owner = this;
             teamMemberForm.LoadEmployees(employees);
+            teamMemberForm.EmployeeDeletedFromList += OnEmployeeDeletedFromList;
             teamMemberForm.ShowDialog();
             UpdateEmployeeList_1(teamMemberForm);
         }
 
         private Dictionary<string, List<string>> teamsData = new();
+        private TeamInfoForm teamInfoForm;
 
+        // Обработчик удаления сотрудника из всех списков
+        private void OnEmployeeDeletedFromList(string fullName)
+        {
+            // Удаляем сотрудника из всех команд
+            foreach (var team in teamsData.Keys.ToList())
+            {
+                if (teamsData.ContainsKey(team))
+                {
+                    var updatedMembers = teamsData[team]
+                        .Where(member => !member.StartsWith(fullName))
+                        .ToList();
+
+                    teamsData[team] = updatedMembers;
+                }
+            }
+
+            // Сохраняем изменения
+            SaveTeamsDataToFile("teamsData.json");
+
+            // Обновляем открытую форму информации о команде
+            if (teamInfoForm != null && teamInfoForm.Visible)
+            {
+                teamInfoForm.RemoveTeamMember(fullName);
+            }
+        }
         public void AddTeamName(string teamName)
         {
             textBoxTeams.AppendText(teamName + Environment.NewLine);
@@ -457,9 +519,9 @@ namespace kurs
         }
         private void SaveTeamsToFile()
         {
-            
+
             List<string> teamsData = textBoxTeams.Lines.ToList(); // Получаем текущие названия команд из текстового поля
-            string filePath = "teams.txt"; 
+            string filePath = "teams.txt";
 
             try
             {
@@ -502,7 +564,7 @@ namespace kurs
             {
                 teamsData[teamName] = new List<string>(teamMembers);
             }
-            
+
         }
         private void textBoxTeams_MouseClick(object sender, MouseEventArgs e)
         {
@@ -568,6 +630,29 @@ namespace kurs
             }
         }
 
-        
+        private void EditProject_button_Click_1(object sender, EventArgs e)
+        {
+            if (listViewProjects.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Выберите проект для редактирования", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var selectedProjectName = listViewProjects.SelectedItems[0].Text;
+            var projectToEdit = projects.FirstOrDefault(p => p.ProjectName == selectedProjectName);
+
+            if (projectToEdit != null)
+            {
+                ReplaceProjectForm replaceForm = new ReplaceProjectForm(projectToEdit, employees);
+                replaceForm.ProjectUpdated += ReplaceForm_ProjectUpdated;
+                replaceForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Проект не найден", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
