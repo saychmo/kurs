@@ -40,19 +40,19 @@ namespace kurs
                 // Проверка всех обязательных полей
                 if (string.IsNullOrWhiteSpace(clientName_textBox.Text))
                 {
-                    MessageBox.Show("Введите заказщика проекта", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Введите заказчика проекта", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(address_textBox.Text))
                 {
-                    MessageBox.Show("Введите адрес заказщика", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Введите адрес заказчика", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(bankName_textBox.Text))
                 {
-                    MessageBox.Show("Введите название банка заказщика", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Введите название банка заказчика", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 

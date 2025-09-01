@@ -1,34 +1,34 @@
 [
   {
-    "ProjectName": "ппппп",
-    "Cost": "10000000",
-    "StartDate": "2025-08-07T00:39:17.2754128+07:00",
-    "EndDate": "2025-08-23T00:39:17",
+    "ProjectName": "Aitech",
+    "Cost": "20000",
+    "StartDate": "2025-09-01T14:27:03.6793983+07:00",
+    "EndDate": "2025-09-28T14:27:03",
     "ProjectLeader": {
-      "Surname": "толтол",
-      "Name": "иол",
-      "Patronymic": "щлкалуоаушрн",
-      "FullName": "толтол иол щлкалуоаушрн",
-      "Gender": "жен",
-      "DateOfBirth": "2025-08-08T15:48:09",
-      "Address": "олдтлдьл",
+      "Surname": "Попов",
+      "Name": "Иван",
+      "Patronymic": "Николаевич",
+      "FullName": "Попов Иван Николаевич",
+      "Gender": "муж",
+      "DateOfBirth": "1999-07-09T14:15:52",
+      "Address": "Зорге 2",
       "Specialty": "Бухгалтер",
-      "Experience": "2-4 года",
-      "Education": "пптрпьороь",
-      "EducationDocument": "ооь",
-      "Salary": "7865432123",
-      "PhotoPath": null
+      "Experience": "5-8 лет",
+      "Education": "НГТУ",
+      "EducationDocument": "23456789",
+      "Salary": "40000",
+      "PhotoPath": "C:\\Users\\user\\Downloads\\˚◞ ꒰милый котик꒱ ⋆ _  ˚.jpg"
     },
     "ProjectClient": {
-      "Name": "Егор",
-      "Address": "ав",
-      "BankName": "пвп",
+      "Name": "OOO 'Инвест'",
+      "Address": "Кропоткина 10",
+      "BankName": "Сбербанк",
       "AccountNumber": "12345678901234567890",
-      "INN": "пвп",
-      "ResponsiblePerson": "паа",
-      "ResponsiblePersonPhone": "пп"
+      "INN": "1234567890",
+      "ResponsiblePerson": "Мелов А.В.",
+      "ResponsiblePersonPhone": "1234567890"
     },
     "TeamMembers": [],
-    "PremiumRate": "8765"
+    "PremiumRate": "30000"
   }
 ]
