@@ -22,6 +22,7 @@ namespace kurs
         {
             InitializeComponent();
             _mainForm = mainForm;
+            
             LoadEmployeeListFromJson(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "employeeList.json"));
         }
 
@@ -91,6 +92,18 @@ namespace kurs
                 MessageBox.Show("Пожалуйста, введите название коллектива.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            // Быстрая проверка на наличие участников ДО проверки дат
+            if (!HasTeamMembers())
+            {
+                MessageBox.Show("Коллектив не может быть пустым. Добавьте хотя бы одного участника.", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            // Проверяем корректность дат в DataGridView
+            if (!ValidateDatesInGridView())
+            {
+                return; // Если даты некорректны, прерываем сохранение
+            }
 
             // Создаем список для хранения коллективов
             List<string> teamMembers = new();
@@ -98,7 +111,7 @@ namespace kurs
             // Проходим по строкам DataGridView и собираем данные
             foreach (DataGridViewRow row in dataGridViewTeamMembers.Rows)
             {
-                if (row.Cells["LastName"].Value != null)
+                if (row.Cells["LastName"].Value != null && !row.IsNewRow)
                 {
                     string lastName = row.Cells["LastName"].Value.ToString();
                     string startDate = row.Cells["StartDate"].Value?.ToString() ?? "Не указана";
@@ -107,8 +120,6 @@ namespace kurs
                     teamMembers.Add($"{lastName} (с {startDate} по {endDate})");
                 }
             }
-
-
 
             // Закрываем форму и передаем данные обратно в Form1
             Form1 mainForm = (Form1)Owner;
@@ -121,6 +132,66 @@ namespace kurs
             mainForm.AddTeamMembers(teamName, teamMembers);
             mainForm.SaveTeamsDataToFile("teamsData.json");
             this.Close();
+        }
+        private bool HasTeamMembers()
+        {
+            foreach (DataGridViewRow row in dataGridViewTeamMembers.Rows)
+            {
+                if (row.Cells["LastName"].Value != null && !row.IsNewRow &&
+                    !string.IsNullOrWhiteSpace(row.Cells["LastName"].Value.ToString()))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        // Метод для проверки корректности дат
+        private bool ValidateDatesInGridView()
+        {
+            foreach (DataGridViewRow row in dataGridViewTeamMembers.Rows)
+            {
+                // Пропускаем пустые строки и новую строку для добавления
+                if (row.IsNewRow || row.Cells["LastName"].Value == null)
+                    continue;
+
+                // Проверяем дату начала
+                if (row.Cells["StartDate"].Value != null)
+                {
+                    if (!DateTime.TryParse(row.Cells["StartDate"].Value.ToString(), out DateTime startDate))
+                    {
+                        MessageBox.Show($"Некорректная дата начала в строке {row.Index + 1}.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        dataGridViewTeamMembers.CurrentCell = row.Cells["StartDate"];
+                        return false;
+                    }
+                }
+
+                // Проверяем дату окончания
+                if (row.Cells["EndDate"].Value != null)
+                {
+                    if (!DateTime.TryParse(row.Cells["EndDate"].Value.ToString(), out DateTime endDate))
+                    {
+                        MessageBox.Show($"Некорректная дата окончания в строке {row.Index + 1}.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        dataGridViewTeamMembers.CurrentCell = row.Cells["EndDate"];
+                        return false;
+                    }
+                }
+
+                // Проверяем, что дата окончания не раньше даты начала
+                if (row.Cells["StartDate"].Value != null && row.Cells["EndDate"].Value != null)
+                {
+                    DateTime startDate = DateTime.Parse(row.Cells["StartDate"].Value.ToString());
+                    DateTime endDate = DateTime.Parse(row.Cells["EndDate"].Value.ToString());
+
+                    if (endDate < startDate)
+                    {
+                        MessageBox.Show($"Дата окончания не может быть раньше даты начала в строке {row.Index + 1}.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        dataGridViewTeamMembers.CurrentCell = row.Cells["EndDate"];
+                        return false;
+                    }
+                }
+            }
+
+            return true; // Все даты корректны
         }
 
         private void btnAddSelectedEmployees_Click(object sender, EventArgs e)
